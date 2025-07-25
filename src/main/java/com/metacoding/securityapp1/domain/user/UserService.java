@@ -21,17 +21,12 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void 회원가입(String username, String password, String email) {
         String encPassword = bCryptPasswordEncoder.encode(password);
-        userRepository.save(username, encPassword, email);
+        String roles = "USER";
+        userRepository.save(roles, username, encPassword, email);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            return null;
-        } else {
-            return new PrincipalDetails(user);
-        }
+        return userRepository.findByUsername(username);
     }
 }
